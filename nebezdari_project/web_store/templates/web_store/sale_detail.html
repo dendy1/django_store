@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <article>
+        <h2><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h2>
+
+        <p class="subheader">
+            Categories:
+            {% for category in sale.categories.all %}
+                {{ category.category_name }}
+            {% endfor %}
+        </p>
+
+        <p class="subheader">
+            Author Information:
+            <a href="{{ sale.author.get_absolute_url }}">{{ sale.author.get_full_name }}</a>
+            {{ sale.author.username }}
+            {{ sale.author.email }}
+            {{ sale.author.phone }}
+        </p>
+
+        <p class="subheader">
+            Price: {{ sale.price }}
+        </p>
+
+        <p></p>
+
+        {{ sale.photo }}
+        <p></p>
+        {{ sale.body | safe }}
+    </article>
+{% endblock %}
