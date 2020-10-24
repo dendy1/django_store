@@ -50,11 +50,11 @@ class LoginViewTests(WebTest):
         self.__register()
 
         response = self.client.post(reverse('login'), {
-            'username': 'borodin_a_o',
+            'username': 'username',
             'password': 'password'
         }, follow=True)
 
-        self.assertContains(response, 'Invalid data')
+        self.assertIn('Please enter a correct username and password', response.content.decode())
 
     def __register(self):
         seller = Seller.objects.create_user(

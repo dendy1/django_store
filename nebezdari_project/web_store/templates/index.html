@@ -9,39 +9,61 @@
         This is Home Page
     </h1>
 
-    {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}"> Logout </a>
-    {% else %}
-        <a href="{% url 'login' %}"> Login </a>
-        <a href="{% url 'register' %}"> Register </a>
-    {% endif %}
-
-
     {% for sale in sale_list %}
-        <article>
-            <h2><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h2>
-
-            <p class="subheader">
-                Categories:
-                {% for category in sale.categories.all %}
-                    {{ category.category_name }}
-                {% endfor %}
-            </p>
-
-            <p class="subheader">
-                Author: {{ sale.author.get_full_name }}
-            </p>
-
-            <p class="subheader">
-                Price: {{ sale.price }}
-            </p>
-
-            <p></p>
-            {{ sale.photo }}
-            <p></p>
-            {{ sale.body | safe | truncatewords:15 }}
-        </article>
+        <div class="card mb-5" style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="{{ sale.photo.url }}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8  text-center">
+                    <div class="card-header">
+                        {{ sale.author.get_full_name }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h5>
+                        <p class="card-text">T{{ sale.body | safe | truncatewords:15 }}</p>
+                        <p class="card-text"><small class="text-muted">{{ sale.category }}</small></p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{ sale.price }}
+                    </div>
+                </div>
+            </div>
+        </div>
     {% empty %}
         <p>No sales yet.</p>
     {% endfor %}
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            <li class="page-item">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
 {% endblock content %}

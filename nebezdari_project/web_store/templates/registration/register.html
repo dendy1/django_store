@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Register Page
@@ -11,16 +12,7 @@
 
     <form method="post" action="{% url 'register' %}">
         {% csrf_token %}
-        <table>
-            {% for field in form %}
-                <tr>
-                    {{ field.errors }}
-                    <td>{{ field.label_tag }}</td>
-                    <td>{{ field }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-
+        {{ form | crispy }}
         <input type="submit" value="Register">
         <input type="hidden" name="next" value="{{ next }}">
     </form>

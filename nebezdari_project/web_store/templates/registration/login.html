@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Login Page
@@ -11,18 +12,11 @@
 
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <table>
-            <tr>
-                {{ form.username.errors }}
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                {{ form.password.errors }}
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
+        {% if form.errors %}
+            <p>Please enter a correct username and password.</p>
+        {% endif %}
+
+        {{ form | crispy }}
 
         <input type="submit" value="Login">
         <input type="hidden" name="next" value="{{ next }}">

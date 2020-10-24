@@ -2,22 +2,18 @@
 
 {% block content %}
     <article>
-        <table>
+        <table class="table">
             <tr>
-                <th>Sale Title</th>
-                <th>Update</th>
-                <th>Delete</th>
+                <th scope="col">Sale Title</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
             </tr>
 
             {% for sale in seller.get_sales_list %}
                 <tr>
                     <td>{{ sale.title }}</td>
-                </tr>
-                <tr>
-                    <td>{{ sale.get_update_url }}</td>
-                </tr>
-                <tr>
-                    <td>{{ sale.get_delete_url }}</td>
+                    <td><a class="btn btn-info" href="{{ sale.get_update_url }}" role="button">Update</a></td>
+                    <td><a class="btn btn-danger" href="{{ sale.get_delete_url }}" role="button">Delete</a></td>
                 </tr>
             {% endfor %}
         </table>

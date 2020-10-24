@@ -23,13 +23,16 @@ class Seller(AbstractUser):
 class Category(models.Model):
     category_name = models.CharField(max_length=50, blank=False)
 
+    def __str__(self):
+        return self.category_name
+
 class Sale(models.Model):
     title = models.CharField(max_length=30, blank=False)
     body = models.TextField(max_length=10000, blank=False)
-    categories = models.ManyToManyField(Category)
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     author = models.ForeignKey(Seller, on_delete=models.CASCADE)
     price = models.IntegerField()
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='sales/photos/')
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     edited_at = models.DateTimeField(auto_now=True, editable=False)
@@ -42,7 +45,3 @@ class Sale(models.Model):
 
     def get_delete_url(self):
         return reverse('sale_delete', kwargs={'pk': self.pk})
-
-    @staticmethod
-    def get_create_url():
-        return reverse('sale_create')

@@ -17,10 +17,6 @@ class HomeViewTests(WebTest):
             Category.objects.create(category_name='Category4')
         ]
 
-        for i in range(15):
-            sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-            sale.categories.add(self.categories[0], self.categories[1])
-
 
     def test_view_url_exists_at_desired_location(self):
         response = self.client.get('')
@@ -75,6 +71,10 @@ class HomeViewTests(WebTest):
         self.assertNotIn(reverse('login'), response.content.decode())
 
     def test_pagination_is_ten(self):
+        for i in range(15):
+            sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
+            sale.categories.add(self.categories[0], self.categories[1])
+
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)

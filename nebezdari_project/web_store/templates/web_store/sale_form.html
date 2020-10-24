@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 
+{% load crispy_forms_filters %}
+
+{% block header %}
+    Sale Creation Form
+{% endblock header %}
+
 {% block content %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit">
+        {{ form | crispy }}
+        <button type="submit" class="btn btn-success">Create Sale</button>
     </form>
 {% endblock %}

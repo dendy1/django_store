@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 
 from web_store.models import Seller, Sale
 
@@ -19,4 +20,4 @@ class SaleModelTests(TestCase):
         self.assertIsNotNone(self.sale.get_delete_url())
 
     def test_get_create_url(self):
-        self.assertIsNotNone(Sale.get_create_url())
+        self.assertIsNotNone(reverse('sale_create'))
