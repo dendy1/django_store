@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    Admin Categories
+{% endblock title %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Admin Categories List </small></h1>
+        <table class="table">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+            </tr>
+
+            {% for category in category_list %}
+                <tr>
+                    <td><a class="" href="{{ category.get_absolute_url }}" role="button">{{ category.id }}</a></td>
+                    <td><a class="" href="{{ category.get_absolute_url }}"
+                           role="button">{{ category.category_name }}</a></td>
+                    <td><a class="btn btn-info" href="{{ category.get_update_url }}" role="button">Update</a></td>
+                    <td><a class="btn btn-danger" href="{{ category.get_delete_url }}" role="button">Delete</a></td>
+                </tr>
+            {% empty %}
+                <p>No categories yet.</p>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        <!-- Search Widget -->
+        <div class="card my-4">
+            <a class="btn btn-success" href="{% url 'category_create' %}" role="button">Create Category</a>
+        </div>
+    </div>
+{% endblock content %}

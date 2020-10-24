@@ -26,5 +26,7 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login/', views.AuthenticationView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('reset-password', auth_views.PasswordResetView.as_view(template_name='registration/password_reset.html'), name='reset_password'),
+    path('reset-password-sent', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='reset_password_done'),
     path('admin/', admin.site.urls),
 ]

@@ -1,41 +1,42 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Home Page
 {% endblock title %}
 
 {% block content %}
-    <h1>
-        This is Home Page
-    </h1>
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Sales List </small></h1>
 
-    {% for sale in sale_list %}
-        <div class="card mb-5" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="{{ sale.photo.url }}" class="card-img" alt="...">
-                </div>
-                <div class="col-md-8  text-center">
-                    <div class="card-header">
-                        {{ sale.author.get_full_name }}
+        {% for sale in sale_list %}
+            <!-- Blog Post -->
+            <div class="card mb-3 text-center">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img class="card-img-top" src="{{ sale.photo.url }}" alt="Card image cap">
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h5>
-                        <p class="card-text">T{{ sale.body | safe | truncatewords:15 }}</p>
-                        <p class="card-text"><small class="text-muted">{{ sale.category }}</small></p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        {{ sale.price }}
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h2 class="card-title"><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h2>
+                            <h5>{{ sale.price }} Р</h5>
+                            <p class="card-text">{{ sale.body | safe | truncatewords:15 }}</p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Posted by
+                            <a href="{{ sale.author.get_absolute_url }}">{{ sale.author.get_full_name }}</a> in
+
+                            <a href="{{ sale.category.get_absolute_url }}">{{ sale.category.category_name }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% empty %}
-        <p>No sales yet.</p>
-    {% endfor %}
+        {% empty %}
+            No sales yet.
+        {% endfor %}
 
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
             {% if page_obj.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page=1">&laquo; first</a>
@@ -64,6 +65,19 @@
                 </li>
             {% endif %}
         </ul>
-    </nav>
+    </div>
 
+    <!-- Sidebar Widgets Column -->
+    <div class="col-md-4">
+        <!-- Search Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">Category Filtering</h5>
+            <div class="card-body">
+                <form class="form-inline my-2 my-lg-0" method="get">
+                    {{ filter.form | crispy }}
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

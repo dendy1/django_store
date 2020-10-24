@@ -2,9 +2,12 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <input type="submit" value="Submit">
-    </form>
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Category Creation Form </small></h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 {% endblock %}

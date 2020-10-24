@@ -1,21 +1,40 @@
 {% extends "base.html" %}
 
+{% block extra_header %}
+    <li class="nav-item">
+        <a class="nav-link" href="{{ seller.get_update_url }}">Update Profile</a>
+    </li>
+{% endblock extra_header %}
+
 {% block content %}
-    <article>
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Sale Creation Form </small></h1>
         <table class="table">
             <tr>
-                <th scope="col">Sale Title</th>
-                <th scope="col">Update</th>
-                <th scope="col">Delete</th>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Body</th>
+                <th scope="col">Category</th>
+
+                {% if seller.id == user.id %}
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                {% endif %}
             </tr>
 
             {% for sale in seller.get_sales_list %}
                 <tr>
-                    <td>{{ sale.title }}</td>
-                    <td><a class="btn btn-info" href="{{ sale.get_update_url }}" role="button">Update</a></td>
-                    <td><a class="btn btn-danger" href="{{ sale.get_delete_url }}" role="button">Delete</a></td>
+                    <td><a class="" href="{{ sale.get_absolute_url }}">{{ sale.id }}</a></td>
+                    <td><a class="" href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></td>
+                    <td>{{ sale.body | truncatewords:10 }}</td>
+                    <td><a class="" href="{{ sale.category.get_absolute_url }}">{{ sale.category }}</a></td>
+
+                    {% if seller.id == user.id %}
+                        <td><a class="btn btn-info" href="{{ sale.get_update_url }}" role="button">Update</a></td>
+                        <td><a class="btn btn-danger" href="{{ sale.get_delete_url }}" role="button">Delete</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
-    </article>
+    </div>
 {% endblock %}

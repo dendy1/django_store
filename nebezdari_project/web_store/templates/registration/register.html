@@ -6,14 +6,13 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>
-        This is Register Page
-    </h1>
-
-    <form method="post" action="{% url 'register' %}">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <input type="submit" value="Register">
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Register Page </small></h1>
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <input type="submit" value="Register" class="btn btn-success">
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
 {% endblock content %}

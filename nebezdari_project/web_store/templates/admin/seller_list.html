@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Admin Sellers
+{% endblock title %}
+
+{% block content %}
+    <div class="col-md-8">
+        <h1 class="my-4"><small> Admin Sellers List </small></h1>
+        <table class="table">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Delete</th>
+            </tr>
+
+            {% for seller in seller_list %}
+                <tr>
+                    <td><a class="" href="{{ seller.get_absolute_url }}" role="button">{{ seller.id }}</a></td>
+                    <td><a class="" href="{{ seller.get_absolute_url }}" role="button">{{ seller.username }}</a></td>
+                    <td><a class="" href="{{ seller.get_absolute_url }}" role="button">{{ seller.get_full_name }}</a>
+                    </td>
+                    <td><a class="btn btn-danger" href="{{ seller.get_delete_url }}" role="button">Delete</a></td>
+                </tr>
+            {% empty %}
+                <p>No sales yet.</p>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock content %}

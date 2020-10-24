@@ -17,11 +17,26 @@ class Seller(AbstractUser):
     def get_absolute_url(self):
         return reverse('seller_detail', kwargs={'pk': self.pk})
 
+    def get_update_url(self):
+        return reverse('seller_update', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('seller_delete', kwargs={'pk': self.pk})
+
     def get_sales_list(self):
         return Sale.objects.filter(author__email=self.email).all()
 
 class Category(models.Model):
     category_name = models.CharField(max_length=50, blank=False)
+
+    def get_absolute_url(self):
+        return reverse('home') + '?category=' + str(self.pk)
+
+    def get_update_url(self):
+        return reverse('category_update', kwargs={'pk': self.pk})
+
+    def get_delete_url(self):
+        return reverse('category_delete', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.category_name
@@ -45,3 +60,6 @@ class Sale(models.Model):
 
     def get_delete_url(self):
         return reverse('sale_delete', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return 'Sale ' + self.title + ' in ' + str(self.category)
