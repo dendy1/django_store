@@ -11,8 +11,7 @@ class SaleDetailViewTest(WebTest):
             Category.objects.create(category_name='Category1'),
             Category.objects.create(category_name='Category2')
         ]
-        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        self.sale.categories.add(self.categories[0], self.categories[1])
+        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', category = self.categories[0], price=1000, author=self.seller)
 
     def test_detail_view(self):
         response = self.client.get(self.sale.get_absolute_url())
@@ -28,8 +27,7 @@ class SaleDetailViewTest(WebTest):
 
     def test_categories_in_sale(self):
         response = self.client.get(self.sale.get_absolute_url())
-        for category in self.sale.categories.all():
-            self.assertContains(response, category.category_name)
+        self.assertContains(response, self.sale.category)
 
     def test_price_in_sale(self):
         response = self.client.get(self.sale.get_absolute_url())

@@ -1,32 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <article>
-        <h2><a href="{{ sale.get_absolute_url }}">{{ sale.title }}</a></h2>
+    <div class="col-lg-3">
+        <h1 class="my-4 text-center"><small> Seller Info </small></h1>
+        <ul class="list-group text-center">
+            <li class="list-group-item"><a href="{{ sale.author.get_absolute_url }}">{{ sale.author.get_full_name }}</a></li>
+            <li class="list-group-item">Phone: {{ sale.author.phone }}</li>
+            <li class="list-group-item">E-Mail: {{ sale.author.email }}</li>
+            <li class="list-group-item">Username: {{ sale.author.username }}</li>
+        </ul>
+    </div>
+    <!-- /.col-lg-3 -->
 
-        <p class="subheader">
-            Categories:
-            {% for category in sale.categories.all %}
-                {{ category.category_name }}
-            {% endfor %}
-        </p>
+    <div class="col-lg-9">
 
-        <p class="subheader">
-            Author Information:
-            <a href="{{ sale.author.get_absolute_url }}">{{ sale.author.get_full_name }}</a>
-            {{ sale.author.username }}
-            {{ sale.author.email }}
-            {{ sale.author.phone }}
-        </p>
+        <h1 class="my-4 text-center"><small> Sale Info </small></h1>
+        <div class="card mt-4">
+            {% if sale.photo %}
+                <img class="card-img-top  img-fluid" src="{{ sale.photo.url }}" alt="Card image cap">
+            {% else %}
+                <img class="card-img-top  img-fluid" src="" alt="Card image cap">
+            {% endif %}
 
-        <p class="subheader">
-            Price: {{ sale.price }}
-        </p>
-
-        <p></p>
-
-        {{ sale.photo }}
-        <p></p>
-        {{ sale.body | safe }}
-    </article>
+            <div class="card-body">
+                <h3 class="card-title">{{ sale.title }}</h3>
+                <h4>{{ sale.price }} Р</h4>
+                <p class="card-text">{{ sale.body | safe }}</p>
+                <span class="text-warning">
+                    Posted by
+                    <a href="{{ sale.author.get_absolute_url }}">{{ sale.author.get_full_name }}</a> in
+                    <a href="{{ sale.category.get_absolute_url }}">{{ sale.category.category_name }}</a>
+                </span>
+            </div>
+        </div>
+    </div>
 {% endblock %}

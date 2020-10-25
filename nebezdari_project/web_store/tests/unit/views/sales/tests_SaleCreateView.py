@@ -12,8 +12,7 @@ class SaleCreateViewTests(WebTest):
             Category.objects.create(category_name='Category1'),
             Category.objects.create(category_name='Category2')
         ]
-        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        self.sale.categories.add(self.categories[0], self.categories[1])
+        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, category=self.categories[1], author=self.seller)
 
     def test_create_view(self):
         response = self.client.get(reverse('sale_create'))

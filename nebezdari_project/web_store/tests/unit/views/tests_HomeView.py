@@ -1,5 +1,3 @@
-import random
-
 from django.urls import reverse
 from django_webtest import WebTest
 
@@ -36,21 +34,17 @@ class HomeViewTests(WebTest):
         self.assertContains(response, 'No sales yet')
 
     def test_one_sale(self):
-        sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        sale.categories.add(self.categories[0], self.categories[1])
+        sale = Sale.objects.create(title='1-title', body='1-body', photo='sales/photos/devar_logo1_HSGxUzx.jpg', price=1000, category=self.categories[0], author=self.seller)
 
         response = self.client.get(reverse('home'))
         self.assertContains(response, '1-title')
         self.assertContains(response, '1-body')
         self.assertContains(response, 'Category1')
-        self.assertContains(response, 'Category2')
         self.assertContains(response, self.seller.get_full_name())
 
     def test_two_sales(self):
-        sale1 = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        sale1.categories.add(self.categories[0], self.categories[1])
-        sale2 = Sale.objects.create(title='2-title', body='2-body', photo='', price=2000, author=self.seller)
-        sale2.categories.add(self.categories[2], self.categories[3])
+        sale1 = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, category=self.categories[0], author=self.seller)
+        sale2 = Sale.objects.create(title='2-title', body='2-body', photo='', price=2000, category=self.categories[1], author=self.seller)
 
         response = self.client.get(reverse('home'))
         self.assertContains(response, '1-title')
@@ -72,8 +66,7 @@ class HomeViewTests(WebTest):
 
     def test_pagination_is_ten(self):
         for i in range(15):
-            sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-            sale.categories.add(self.categories[0], self.categories[1])
+            sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, category=self.categories[2], author=self.seller)
 
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)

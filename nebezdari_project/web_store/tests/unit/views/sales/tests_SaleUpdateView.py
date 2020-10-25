@@ -12,8 +12,7 @@ class SaleUpdateViewTests(WebTest):
             Category.objects.create(category_name='Category1'),
             Category.objects.create(category_name='Category2')
         ]
-        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        self.sale.categories.add(self.categories[0], self.categories[1])
+        self.sale = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, category=self.categories[1], author=self.seller)
 
     def test_update_unauthorized_view(self):
         response = self.client.get(self.sale.get_update_url())
@@ -32,7 +31,7 @@ class SaleUpdateViewTests(WebTest):
         self.assertEqual(response.status_code, 200)
 
     def test_update_form_existence(self):
-        page = self.app.get(self.sale.get_update_url(), user='borodin_a_o')
+        page =  self.app.get(self.sale.get_update_url(), user='borodin_a_o')
         self.assertEqual(len(page.forms), 1)
 
     def test_error_on_empty_form(self):

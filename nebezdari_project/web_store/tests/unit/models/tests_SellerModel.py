@@ -27,15 +27,13 @@ class SellerModelTests(TestCase):
         self.assertIsNotNone(self.seller.get_absolute_url())
 
     def test_get_get_sales_list(self):
-        self.categories = [
+        categories = [
             Category.objects.create(category_name='Category1'),
             Category.objects.create(category_name='Category2')
         ]
-        self.sale1 = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, author=self.seller)
-        self.sale1.categories.add(self.categories[0])
 
-        self.sale2 = Sale.objects.create(title='2-title', body='2-body', photo='', price=2000, author=self.seller)
-        self.sale2.categories.add(self.categories[0], self.categories[1])
+        sale1 = Sale.objects.create(title='1-title', body='1-body', photo='', price=1000, category=categories[0], author=self.seller)
+        sale2 = Sale.objects.create(title='2-title', body='2-body', photo='', price=2000, category=categories[1], author=self.seller)
 
         self.assertIsNotNone(self.seller.get_sales_list())
         self.assertEqual(len(self.seller.get_sales_list()), Sale.objects.filter(author__email=self.seller.email).count())
