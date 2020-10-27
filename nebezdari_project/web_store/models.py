@@ -1,12 +1,30 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator, MinLengthValidator, EmailValidator
 from django.db import models
 from django.urls import reverse
 
-
+# Добавить валидацию
 class Seller(AbstractUser):
-    email = models.EmailField(max_length=50, blank=False)
-    phone = models.CharField(max_length=30, blank=False)
-    middle_name = models.CharField(max_length=150, blank=True)
+    alphanumeric_symbols = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only alphanumeric characters are allowed.')
+    alpha_only = RegexValidator(r'^[a-zA-Zа-яА-Я]*$', 'Only alphanumeric characters are allowed.')
+    phone_validator = RegexValidator(r'^[0-9+-]*$')
+    email_validator = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only english alphanumeric characters are allowed.')
+
+    username = models.CharField(max_length=150, unique=True, blank=False, validators=[alphanumeric_symbols])
+    password = models.CharField(max_length=150, blank=False, validators=[MinLengthValidator(8)])
+    email = models.CharField(max_length=50, unique=True, blank=False, validators=[EmailValidator()])
+
+    phone = models.CharField(max_length=30, validators=[phone_validator])
+
+    first_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
+    last_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
+    middle_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
+
+    def save(self, *args, **kwargs):
+        #self.clean_fields()  # validate individual fields
+        #self.clean()  # validate constraints between fields
+        #self.validate_unique()  # validate uniqness of fields
+        return super(AbstractUser, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.get_full_name() + ' [' + self.username + ', ' + self.email + ', ' + self.phone  + ']'

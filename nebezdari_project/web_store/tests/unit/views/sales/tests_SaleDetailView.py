@@ -6,7 +6,7 @@ from web_store.models import Seller, Category, Sale
 class SaleDetailViewTest(WebTest):
 
     def setUp(self):
-        self.seller = Seller.objects.create(email='borodin_a_o@sc.vsu.ru', username='borodin_a_o', password='password')
+        self.seller = Seller.objects.create(email='borodin_a_o@sc.vsu.ru', username='borodin_a_o', password='password', phone='+7-952-952-52-38')
         self.categories = [
             Category.objects.create(category_name='Category1'),
             Category.objects.create(category_name='Category2')

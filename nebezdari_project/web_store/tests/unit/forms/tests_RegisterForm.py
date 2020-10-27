@@ -14,7 +14,7 @@ class RegisterFormTests(TestCase):
             'first_name': 'Andrei',
             'last_name': 'Borodin',
             'middle_name': 'Olegovich',
-            'phone': '+79529525238'
+            'phone': '+7-952-952-52-38'
         }
 
     def test_init(self):
@@ -100,8 +100,10 @@ class RegisterFormTests(TestCase):
         self.seller = Seller.objects.create_user(
             username='example',
             password='secret',
-            email='example@gmail.com'
+            email='example@gmail.com',
+            phone='+7-952-952-52-38'
         )
+
         invalid_form = self.__get_invalid_form('username', 'example')
         self.assertFalse(invalid_form.is_valid())
         self.assertEqual(invalid_form.errors, {
@@ -112,7 +114,8 @@ class RegisterFormTests(TestCase):
         self.seller = Seller.objects.create_user(
             username='example',
             password='secret',
-            email='example@gmail.com'
+            email='example@gmail.com',
+            phone='+7-952-952-52-38'
         )
 
         invalid_form = self.__get_invalid_form('email', 'example@gmail.com')

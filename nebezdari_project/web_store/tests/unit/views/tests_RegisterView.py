@@ -15,7 +15,7 @@ class RegisterViewTest(WebTest):
             'first_name': 'Andrei',
             'last_name': 'Borodin',
             'middle_name': 'Olegovich',
-            'phone': '+79529525238'
+            'phone': '+7-952-952-52-38'
         }
 
     def test_view_url_exists_at_desired_location(self):

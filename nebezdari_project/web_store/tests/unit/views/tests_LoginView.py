@@ -60,6 +60,7 @@ class LoginViewTests(WebTest):
         seller = Seller.objects.create_user(
             username='borodin_a_o',
             email='borodin_a_o@sc.vsu.ru',
-            password='password'
+            password='password',
+            phone='+7-952-952-52-38'
         )
         return seller
