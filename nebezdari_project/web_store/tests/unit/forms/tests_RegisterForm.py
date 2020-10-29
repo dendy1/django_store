@@ -97,9 +97,9 @@ class RegisterFormTests(TestCase):
         self.assertFalse(invalid_form.is_valid())
 
     def test_username_is_already_in_use(self):
-        self.seller = Seller.objects.create_user(
+        self.seller = Seller.objects.create(
             username='example',
-            password='secret',
+            password='password',
             email='example@gmail.com',
             phone='+7-952-952-52-38'
         )
@@ -111,9 +111,9 @@ class RegisterFormTests(TestCase):
         })
 
     def test_email_is_already_in_use(self):
-        self.seller = Seller.objects.create_user(
+        self.seller = Seller.objects.create(
             username='example',
-            password='secret',
+            password='password',
             email='example@gmail.com',
             phone='+7-952-952-52-38'
         )

@@ -3,16 +3,18 @@ from django.core.validators import RegexValidator, MinLengthValidator, EmailVali
 from django.db import models
 from django.urls import reverse
 
+from web_store.managers import SellerManager
+
+alphanumeric_symbols = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only alphanumeric characters are allowed.')
+alpha_only = RegexValidator(r'^[a-zA-Zа-яА-Я]*$', 'Only alphanumeric characters are allowed.')
+phone_validator = RegexValidator(r'^[0-9+-]*$')
+email_validator = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only english alphanumeric characters are allowed.')
+
 # Добавить валидацию
 class Seller(AbstractUser):
-    alphanumeric_symbols = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only alphanumeric characters are allowed.')
-    alpha_only = RegexValidator(r'^[a-zA-Zа-яА-Я]*$', 'Only alphanumeric characters are allowed.')
-    phone_validator = RegexValidator(r'^[0-9+-]*$')
-    email_validator = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only english alphanumeric characters are allowed.')
-
     username = models.CharField(max_length=150, unique=True, blank=False, validators=[alphanumeric_symbols])
-    password = models.CharField(max_length=150, blank=False, validators=[MinLengthValidator(8)])
-    email = models.CharField(max_length=50, unique=True, blank=False, validators=[EmailValidator()])
+    password = models.CharField(max_length=150, blank=False)
+    email = models.CharField(max_length=50, unique=True, blank=False, validators=[alphanumeric_symbols, EmailValidator()])
 
     phone = models.CharField(max_length=30, validators=[phone_validator])
 
@@ -20,10 +22,12 @@ class Seller(AbstractUser):
     last_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
     middle_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
 
+    objects = SellerManager
+
     def save(self, *args, **kwargs):
-        #self.clean_fields()  # validate individual fields
-        #self.clean()  # validate constraints between fields
-        #self.validate_unique()  # validate uniqness of fields
+        self.clean_fields()  # validate individual fields
+        self.clean()  # validate constraints between fields
+        self.validate_unique()  # validate uniqueness of fields
         return super(AbstractUser, self).save(*args, **kwargs)
 
     def __str__(self):
