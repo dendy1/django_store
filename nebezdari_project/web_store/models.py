@@ -1,5 +1,8 @@
+import re
+
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import RegexValidator, MinLengthValidator, EmailValidator
+from django.core.validators import RegexValidator, EmailValidator
 from django.db import models
 from django.urls import reverse
 
@@ -13,7 +16,6 @@ email_validator = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only english alphanume
 # Добавить валидацию
 class Seller(AbstractUser):
     username = models.CharField(max_length=150, unique=True, blank=False, validators=[alphanumeric_symbols])
-    password = models.CharField(max_length=150, blank=False)
     email = models.CharField(max_length=50, unique=True, blank=False, validators=[alphanumeric_symbols, EmailValidator()])
 
     phone = models.CharField(max_length=30, validators=[phone_validator])
@@ -22,7 +24,7 @@ class Seller(AbstractUser):
     last_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
     middle_name = models.CharField(max_length=150, blank=True, validators=[alpha_only])
 
-    objects = SellerManager
+    objects = SellerManager()
 
     def save(self, *args, **kwargs):
         self.clean_fields()  # validate individual fields

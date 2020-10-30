@@ -50,5 +50,5 @@ class SaleUpdateViewTests(WebTest):
         self.client.login(username='borodin_a_o', password='password')
 
     def __another_login(self):
-        Seller.objects.create_user(email='another@sc.vsu.ru', username='another', password='password')
+        Seller.objects.create_user(email='another@sc.vsu.ru', username='another', password='password', phone='+7-952-952-52-38')
         self.client.login(username='another', password='password')

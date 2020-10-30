@@ -22,11 +22,3 @@ class SaleCreateViewTests(WebTest):
         page = self.app.get(reverse('sale_create'), user='borodin_a_o')
         self.assertEqual(page.status_code, 200)
         self.assertEqual(len(page.forms), 1)
-
-    def __login(self):
-        self.client.login(username='borodin_a_o', password='password')
-
-    def __another_login(self):
-        seller = Seller.objects.create_user(email='another@sc.vsu.ru', username='another', password='password', phone='+7-952-952-52-38')
-        self.client.login(username='another', password='password')
-        return seller

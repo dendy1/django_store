@@ -14,12 +14,10 @@ class AdminCategoryView(AdministratorMixin, ListView):
     template_name = 'admin/category_list.html'
     paginate_by = 15
 
-
 class AdminSaleView(AdministratorMixin, ListView):
     model = Sale
     template_name = 'admin/sale_list.html'
     paginate_by = 15
-
 
 class AdminSellerView(AdministratorMixin, ListView):
     model = Seller
