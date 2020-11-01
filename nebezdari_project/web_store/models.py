@@ -13,7 +13,7 @@ alpha_only = RegexValidator(r'^[a-zA-Zа-яА-Я]*$', 'Only alphanumeric charact
 phone_validator = RegexValidator(r'^[0-9+-]*$')
 email_validator = RegexValidator(r'^[0-9a-zA-Z_@+.-]*$', 'Only english alphanumeric characters are allowed.')
 
-# Добавить валидацию
+
 class Seller(AbstractUser):
     username = models.CharField(max_length=150, unique=True, blank=False, validators=[alphanumeric_symbols])
     email = models.CharField(max_length=50, unique=True, blank=False, validators=[alphanumeric_symbols, EmailValidator()])

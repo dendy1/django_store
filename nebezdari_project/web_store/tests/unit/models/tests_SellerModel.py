@@ -5,7 +5,6 @@ from django_mock_queries.query import MockSet
 from web_store.models import Seller, Sale, Category
 
 
-# Добавить тесты на правильность валидации при создании / сохранении в БД
 class SellerModelTests(TestCase):
 
     def setUp(self) -> None:
@@ -151,11 +150,12 @@ class SellerModelTests(TestCase):
         self.assertRaisesMessage(ValidationError, 'Ensure this value has at most 150 characters',
                                  invalid_user.full_clean)
 
-    # def test_password_invalid_symbols(self):
-    #     invalid_user = Seller(username='username', password='password_тест', email='example@gmail.com',
-    #                           phone='+7-952-952-52-38')
-    #     self.assertRaisesMessage(ValidationError, 'qweqwe', invalid_user.full_clean)
-    #
+    def test_password_invalid_symbols(self):
+        # invalid_user = Seller(username='username', password='password_тест', email='example@gmail.com',
+        #                       phone='+7-952-952-52-38')
+        self.assertRaisesMessage(ValidationError, 'qweqwe', Seller.objects.create, username='username', password='password_тест', email='example@gmail.com',
+                              phone='+7-952-952-52-38')
+
     # def test_invalid_password_less_8_symbols(self):
     #     invalid_user = Seller(username='username', password='pass', email='example@gmail.com',
     #                           phone='+7-952-952-52-38')

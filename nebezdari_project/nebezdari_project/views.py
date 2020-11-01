@@ -28,8 +28,8 @@ class RegisterView(FormView):
             form.cleaned_data['username'],
             form.cleaned_data['email'],
             form.cleaned_data['password'],
+            form.cleaned_data['phone']
         )
-        seller.phone = form.cleaned_data['phone']
         seller.first_name = form.cleaned_data['first_name']
         seller.last_name = form.cleaned_data['last_name']
         seller.middle_name = form.cleaned_data['middle_name']
