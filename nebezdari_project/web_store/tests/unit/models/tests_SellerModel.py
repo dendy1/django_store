@@ -54,31 +54,6 @@ class SellerModelTests(TestCase):
         )
         self.assertIsNotNone(seller.get_absolute_url())
 
-    def test_get_sales_list(self):
-        categories_qs = MockSet(model=Category)
-        seller_qs = MockSet(model=Seller)
-        sale_qs = MockSet(model=Sale)
-
-        category = categories_qs.create(
-            category_name='Category'
-        )
-
-        seller = seller_qs.create(
-            username='borodin_a_o',
-            password='password',
-            email='borodin_a_o@sc.vsu.ru',
-            phone='+7-952-952-52-38',
-            first_name='Andrei',
-            last_name='Borodin',
-            middle_name='Olegovich'
-        )
-
-        sale1 = sale_qs.create(title='1-title', body='1-body', photo='', price=1000, category=category, author=seller)
-        sale2 = sale_qs.create(title='2-title', body='2-body', photo='', price=2000, category=category, author=seller)
-
-        self.assertIsNotNone(seller.get_sales_list())
-        self.assertEqual(len(seller.get_sales_list()), Sale.objects.filter(author__email=seller.email).count())
-
     def test_valid_data(self):
         seller = Seller(
             username='borodin_a_o',
@@ -151,15 +126,16 @@ class SellerModelTests(TestCase):
                                  invalid_user.full_clean)
 
     def test_password_invalid_symbols(self):
-        # invalid_user = Seller(username='username', password='password_тест', email='example@gmail.com',
-        #                       phone='+7-952-952-52-38')
-        self.assertRaisesMessage(ValidationError, 'qweqwe', Seller.objects.create, username='username', password='password_тест', email='example@gmail.com',
-                              phone='+7-952-952-52-38')
+        self.assertRaisesMessage(ValidationError, 'Only alphanumeric characters are allowed',
+                                 Seller.objects.create_user, username='username',
+                                 password='password!@тест', email='example@gmail.com',
+                                 phone='+7-952-952-52-38')
 
-    # def test_invalid_password_less_8_symbols(self):
-    #     invalid_user = Seller(username='username', password='pass', email='example@gmail.com',
-    #                           phone='+7-952-952-52-38')
-    #     self.assertRaisesMessage(ValidationError, 'qweqwe', invalid_user.full_clean)
+    def test_invalid_password_less_8_symbols(self):
+        self.assertRaisesMessage(ValidationError, 'The minimum password length is 8', Seller.objects.create_user,
+                                 username='username',
+                                 password='pass', email='example@gmail.com',
+                                 phone='+7-952-952-52-38')
 
     def test_invalid_first_name_more_150_symbols(self):
         invalid_user = Seller(username='username', password='password', email='example@gmail.com',
@@ -210,4 +186,3 @@ class SellerModelTests(TestCase):
         duplicate_user = Seller(username='username2', password='password', email='example@gmail.com',
                                 phone='+7-908-952-52-38')
         self.assertRaisesMessage(ValidationError, 'User with this Email already exists', duplicate_user.full_clean)
-
