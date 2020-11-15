@@ -125,12 +125,6 @@ class SellerModelTests(TestCase):
         self.assertRaisesMessage(ValidationError, 'Ensure this value has at most 150 characters',
                                  invalid_user.full_clean)
 
-    def test_password_invalid_symbols(self):
-        self.assertRaisesMessage(ValidationError, 'Only alphanumeric characters are allowed',
-                                 Seller.objects.create_user, username='username',
-                                 password='password!@тест', email='example@gmail.com',
-                                 phone='+7-952-952-52-38')
-
     def test_invalid_password_less_8_symbols(self):
         self.assertRaisesMessage(ValidationError, 'The minimum password length is 8', Seller.objects.create_user,
                                  username='username',
